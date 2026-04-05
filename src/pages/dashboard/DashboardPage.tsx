@@ -34,7 +34,6 @@ import { useNudges } from '@/hooks/useNudges'
 import { KPICard } from '@/components/shared/KPICard'
 import { PaymentStatusBadge } from '@/components/shared/StatusBadge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 // ---------------------------------------------------------------------------
@@ -82,12 +81,14 @@ const TYPE_LABEL: Record<string, { label: string; color: string }> = {
 function SectionCard({
   children,
   className,
+  id,
 }: {
   children: React.ReactNode
   className?: string
+  id?: string
 }) {
   return (
-    <div className={cn('rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden', className)}>
+    <div id={id} className={cn('rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden', className)}>
       {children}
     </div>
   )
