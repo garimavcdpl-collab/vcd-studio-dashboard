@@ -41,13 +41,27 @@ export function SetPasswordPage() {
     setError('')
     setLoading(true)
     try {
+      // Update password first
       await updatePassword(data.password)
-      await supabase
+
+      // Then clear the force_password_reset flag
+      const { data: authUser } = await supabase.auth.getUser()
+      if (!authUser.user) throw new Error('User not found')
+
+      const { error: updateError } = await supabase
         .from('user_roles')
         .update({ force_password_reset: false })
-        .eq('user_id', (await supabase.auth.getUser()).data.user!.id)
-      navigate('/dashboard')
+        .eq('user_id', authUser.user.id)
+
+      if (updateError) throw updateError
+
+      // Wait a moment for database to settle, then navigate
+      // This ensures the next useRole() call gets the updated data
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      navigate('/dashboard', { replace: true })
     } catch (err: any) {
+      console.error('[SetPasswordPage] Error:', err)
       setError(err.message || 'Failed to update password')
     } finally {
       setLoading(false)
