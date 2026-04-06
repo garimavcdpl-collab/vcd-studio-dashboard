@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
-import { useRole } from '@/hooks/useRole'
+import { useRole, invalidateRoleCache } from '@/hooks/useRole'
 import { supabase } from '@/lib/supabase'
 
 interface SetPasswordForm {
@@ -55,9 +55,11 @@ export function SetPasswordPage() {
 
       if (updateError) throw updateError
 
-      // Wait a moment for database to settle, then navigate
-      // This ensures the next useRole() call gets the updated data
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // Bust the role cache so ProtectedRoute re-reads fresh data
+      invalidateRoleCache()
+
+      // Refresh the auth session so user object changes, triggering useRole re-fetch
+      await supabase.auth.refreshSession()
 
       navigate('/dashboard', { replace: true })
     } catch (err: any) {

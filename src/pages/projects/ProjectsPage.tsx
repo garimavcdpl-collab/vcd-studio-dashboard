@@ -386,10 +386,10 @@ export function ProjectsPage() {
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px] bg-card border-border text-foreground">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-card border-border text-foreground z-50">
             <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="active">Active</SelectItem>
             <SelectItem value="on-hold">On Hold</SelectItem>
@@ -468,7 +468,7 @@ export function ProjectsPage() {
 
       {/* New Project Sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent className="overflow-y-auto sm:max-w-lg">
+        <SheetContent className="overflow-y-auto sm:max-w-lg bg-card text-card-foreground border-border">
           <SheetHeader>
             <SheetTitle>Create New Project</SheetTitle>
             <SheetDescription>
@@ -572,10 +572,10 @@ export function ProjectsPage() {
                   setValue('status', val as ProjectStatus)
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger className="bg-background border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-card border-border text-foreground z-50">
                   <SelectItem value="active">Active</SelectItem>
                   <SelectItem value="on-hold">On Hold</SelectItem>
                   <SelectItem value="completed">Completed</SelectItem>
